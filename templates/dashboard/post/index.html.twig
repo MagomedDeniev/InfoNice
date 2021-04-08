@@ -1,0 +1,59 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}Посты{% endblock %}
+
+{% block body %}
+
+    <div class="container dash-crud-header">
+
+        <h1>Посты</h1>
+
+    </div>
+
+    <div class="md-box md-content-padding">
+
+        <div class="scrollable-table">
+
+            <table class="table table-striped">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th><i class="fas fa-image"></i></th>
+                        <th>Заголовок</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for post in posts %}
+                        <tr>
+                            <td>{{ post.id }}</td>
+                            <td>
+                                <div class="back-picture bp-not-round bp-50" style="background-image: url('{{ vich_uploader_asset(post) }}')"></div>
+                            </td>
+                            <td>
+                                <a href="{{ path('post_show', {'id':post.id}) }}" target="_blank">{{ post.title }}</a>
+                                <br>
+                                <small class="text-muted">{{ post.createdAt ? post.createdAt|date('Y-m-d H:i:s') : '' }}</small>
+                                {{ crudActions(post, 'post') }}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9">Результатов не найдено</td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="my-4">
+        {{ paginator.display }}
+    </div>
+
+{% endblock %}

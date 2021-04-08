@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Новости{% endblock %}
+
+{% block body %}
+
+    {% for post in posts %}
+        {{ postView(post) }}
+    {% endfor %}
+
+    {{ paginator.display }}
+
+{% endblock %}

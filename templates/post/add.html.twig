@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ (section ~ '.adding') | trans({},'posts') }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="md-box md-content-padding">
+
+        <h1>{{ (section ~ '.adding') | trans({},'posts') }}</h1>
+
+        {{ form_start(form) }}
+
+        {% if section == 'ads' %}
+
+            {{ form_row(form.imageFile) }}
+            {{ form_row(form.title) }}
+            {{ form_row(form.categories) }}
+            {{ form_row(form.description) }}
+            {{ form_label(form.price) }}
+
+            <div class="row pt-0 pb-3">
+                <div class="col pr-2">{{ form_widget(form.price) }}</div>
+                <div class="col pl-2">{{ form_widget(form.priceType) }}</div>
+            </div>
+
+        {% else %}
+
+            {{ form_widget(form) }}
+
+        {% endif %}
+
+        <button class="btn btn-primary">
+            Добавить
+        </button>
+
+        {{ form_end(form) }}
+
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ chosen() }}
+    {{ ckeditor() }}
+{% endblock %}

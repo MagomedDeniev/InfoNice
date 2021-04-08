@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Главная{% endblock %}
+
+{#{% block top_adv %}#}
+{#    <div class="banner container text-center my-3">#}
+{#        <img src="{{ asset('assets/images/privet2.jpg') }}" height="100px" alt="privet">#}
+{#    </div>#}
+{#{% endblock %}#}
+
+{% block body %}
+
+    {% for post in posts %}
+        {{ postView(post) }}
+    {% endfor %}
+
+    {{ paginator.display }}
+
+{% endblock %}

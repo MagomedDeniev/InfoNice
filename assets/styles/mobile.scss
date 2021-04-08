@@ -1,0 +1,62 @@
+@media only screen and (max-width: 992px) {
+  #sideNavOpener {
+    font-size: 24px;
+    position: absolute;
+    width: 62px;
+    height: 62px;
+    top: 0;
+    left: 0;
+    line-height: 62px;
+    text-align: center;
+    display: block !important;
+  }
+  .md-navbar .container {
+    flex: 0;
+  }
+  .navbar-login, .navbar-logout {
+    display: block !important;
+    position: absolute;
+    right: 10px;
+  }
+  .sidebar-b {
+    display: none;
+  }
+  .table .md-dot-btn {
+    display: unset !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  h1, .h1 {
+    font-size: 26px;
+    top: 0;
+    margin-bottom: 8px;
+  }
+  .md-post {
+    margin-bottom: 12px !important;
+  }
+  .md-post h4 {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .post-actions {
+    margin-top: 8px !important;
+  }
+  .md-content-padding {
+    padding: 14px 16px;
+  }
+  .col-sm {
+    padding: 0 12px;
+  }
+  .md-post-ad .post-actions {
+    bottom: 16px !important;
+    right: 16px !important;
+  }
+}
+
+@media only screen and (max-width: 576px) {
+  .md-ad-image {
+    width: 140px !important;
+    height: 160px !important;
+  }
+}

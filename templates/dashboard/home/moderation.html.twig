@@ -1,0 +1,49 @@
+{% extends 'dashboard/base.html.twig' %}
+
+{% block title %}
+    Модерация
+{% endblock %}
+
+{% block body %}
+
+    <div class="container dash-crud-header">
+
+        <h1>Модерация</h1>
+
+    </div>
+
+    {% for post in posts %}
+
+        <div class="md-box md-post md-content-padding">
+
+            {{ postTitle(post,false) }}
+            <a href="{{ path('dash_post_edit', {'id':post.id}) }}"><i class="fas fa-pen" style="font-size: 12px;"></i> изменить</a>
+            {{ postInfo(post) }}
+            {{ postCategories(post) }}
+            {{ postPrice(post) }}
+            {{ postImage(post) }}
+            {{ postDescription(post) }}
+
+            <br>
+            <br>
+
+            <a href="{{ path('dash_moderation_publish', {'id':post.id}) }}" class="btn btn-secondary" onclick="return confirm('Вы точно хотите опубликовать пост?');">Опубликовать</a>
+            <a href="{{ path('dash_moderation_featured', {'id':post.id}) }}" class="btn btn-link" style="color: orange" onclick="return confirm('Вы точно хотите опубликовать и добавить пост в избранные?');">
+                <i class="fas fa-star"></i>
+            </a>
+
+            <a href="{{ path('dash_moderation_cancel', {'id':post.id}) }}" class="btn btn-danger float-right" onclick="return confirm('Вы точно хотите отклонить публикацию поста?');">Отклонить</a>
+
+
+        </div>
+
+
+    {% else %}
+
+        <div class="md-box md-content-padding text-center">
+            У вас больше нет постов в модерации
+        </div>
+
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,95 @@
+<nav class="md-navbar navbar navbar-expand-lg navbar-light bg-white sticky-top">
+
+    <a id="sideNavOpener" class="text-dark" href="javascript:void(0)">
+        <i class="fas fa-bars"></i>
+        {% if notifyCount(app.user) %}
+            <span class="notifier"></span>
+        {% endif %}
+    </a>
+
+    <div class="container">
+
+        <a class="navbar-brand" href="{{ path('app_home') }}">
+            <img src="{{ asset('/assets/images/logotype.png') }}" width="100" class="d-inline-block align-top" alt="" loading="lazy">
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarColor03">
+
+            <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('post_section',{'section':'news'}) }}">Новости</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('post_section',{'section':'ads'}) }}">Объявлении</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('post_section',{'section':'questions'}) }}">Вопросы</a>
+                </li>
+
+            </ul>
+
+            <ul class="navbar-nav">
+
+                {% if app.user %}
+
+                    <div class="nav-item dropdown mr-2">
+                        <a class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true">
+                            <i class="fas fa-plus" style="position: relative; margin-right: 3px; top: 1px;"></i>
+                            Добавить
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" style="margin-top: 18px">
+                            <a class="dropdown-item" href="{{ path('post_add', {'section':'news'}) }}">Новость</a>
+                            <a class="dropdown-item" href="{{ path('post_add', {'section':'ads'}) }}">Объявление</a>
+                            <a class="dropdown-item" href="{{ path('post_add', {'section':'questions'}) }}">Вопрос</a>
+                        </div>
+                    </div>
+
+                {% else %}
+
+                    <a class="btn btn-link text-dark" style="box-shadow: unset" href="{{ path('app_login') }}">
+                        <i class="fas fa-user-circle"></i>
+                        Войти
+                    </a>
+
+                {% endif %}
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    {% if app.user %}
+
+        <div class="nav-item dropdown navbar-logout">
+            <a class="btn btn-primary" data-toggle="dropdown" aria-haspopup="true" style="line-height: 24px;width: 40px;height: 40px;">
+                <i class="fas fa-plus-square" style="position: relative; margin-right: 3px; top: 1px;"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" style="margin-top: 20px;margin-right: -2px;">
+                <a class="dropdown-item" href="{{ path('post_add', {'section':'news'}) }}">Добавить новость</a>
+                <a class="dropdown-item" href="{{ path('post_add', {'section':'ads'}) }}">Добавить объявление</a>
+                <a class="dropdown-item" href="{{ path('post_add', {'section':'questions'}) }}">Добавить вопрос</a>
+            </div>
+        </div>
+
+    {% else %}
+
+        <a class="btn btn-link text-dark navbar-login" style="position: absolute;right: 10px" href="{{ path('app_login') }}">
+            <i class="fas fa-user-circle"></i>
+            Войти
+        </a>
+
+    {% endif %}
+
+</nav>
+
+<div id="sideNavCloser">
+    <div id="sideNavBack"></div>
+</div>
+
+<div id="sideNav">
+    {{ userMenu() }}
+</div>

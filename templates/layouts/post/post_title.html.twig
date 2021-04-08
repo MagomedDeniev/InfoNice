@@ -1,0 +1,11 @@
+{% if link %}
+        <h4 class="post-title">
+        <a href="{{ path('post_show', {'id':post.id}) }}">
+                {{ post.title }}
+        </a>
+        </h4>
+{% else %}
+        <h1>
+                {{ post.title }}
+        </h1>
+{% endif %}

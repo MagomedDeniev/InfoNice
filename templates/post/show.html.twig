@@ -1,0 +1,178 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block body %}
+
+    <div class="md-box md-content-padding">
+
+        <article class="md-post">
+
+            {{ postTitle(post,false) }}
+            {{ postInfo(post) }}
+            {{ postCategories(post) }}
+            {{ postPrice(post) }}
+            {{ postImage(post) }}
+            {{ postDescription(post) }}
+            {{ postActions(post,false) }}
+
+        </article>
+
+        {% if is_granted('ROLE_ADMIN') %}
+
+            <a class="btn btn-secondary float-right" href="{{ path('dash_post_edit',{'id':post.id}) }}">Изменить</a>
+
+            <a class="btn featured-toggle{% if post.featured %} added{% endif %}" href="{{ path('post_featured', {'id':post.id}) }}">
+                <i class="fas fa-star"></i>
+            </a>
+
+        {% endif %}
+
+    </div>
+
+    {% if app.user and app.user.bannedUntil < date() %}
+
+        {{ form_start(form) }}
+
+            <div class="md-comment-write">
+
+                <div class="md-box md-content-padding md-box-margin">
+
+                    <div class="md-comment-input">
+
+                        <small class="md-comment-reply-area">
+                            <span class="float-left mr-1">Ответ для</span>
+                            <span class="md-comment-reply-user font-weight-bold"></span>
+                            <span class="md-replying-delete"><i class="fas fa-times"></i></span>
+                        </small>
+                        {{ form_errors(form.message) }}
+                        {{ form_widget(form.message) }}
+
+                    </div>
+
+                    <div class="anonymous-comment">
+                        {{ form_widget(form.anonymous) }}
+                    </div>
+
+                    <button class="btn btn-primary float-right mt-2">
+                        Отправить
+                    </button>
+
+                </div>
+
+            </div>
+
+        {{ form_end(form) }}
+
+    {% else %}
+
+        {% if app.user and app.user.bannedUntil > date() %}
+
+            <div class="md-box md-content-padding md-box-margin text-center">
+                Вы забанены до
+                {{ app.user.bannedUntil ? app.user.bannedUntil | date('d/m/Y') : '' }}
+                ({{ app.user.bannedUntil ? app.user.bannedUntil | date('H:i') : '' }})
+                , поэтому вам запрещено писать комментарии.
+            </div>
+
+        {% else %}
+
+            <div class="md-box md-content-padding md-box-margin">
+                Вам необходимо
+                <a class="font-weight-bold" href="{{ path('app_login') }}">войти</a>
+                или
+                <a class="font-weight-bold" href="{{ path('app_register') }}">зарегистрироваться</a>
+                чтобы оставить комментарий.
+            </div>
+
+        {% endif %}
+
+    {% endif %}
+
+    <div class="md-box md-content-padding md-box-margin">
+
+        <div class="md-comments">
+
+            <div id="comments" style="position: relative; top: -90px;"></div>
+
+            <h6 class="mb-3">Комментарии:</h6>
+
+            {% for comment in comments %}
+
+                {% if app.user != post.author and app.user != comment.author and comment.anonymous == true %}
+
+                {% else %}
+
+                    <div class="md-comment">
+
+                        <a class="font-weight-bold" href="{{ path('user_profile',{'username':comment.author.username}) }}">{{ comment.author.username }}</a>
+
+                        {% if app.user %}
+
+                            <button type="button" class="btn md-dot-btn md-comment-dots" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                {% if app.user != comment.author or is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('post_comment_complaint',{'id':comment.id}) }}" class="dropdown-item" onclick="return confirm('Вы уверенны что хотите пожаловаться на комментарий?');">
+                                        <i class="fas fa-exclamation-triangle"></i> Пожаловаться
+                                    </a>
+                                {% endif %}
+
+                                {% if app.user == comment.author or is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('post_comment_delete',{'id':comment.id}) }}" class="dropdown-item" onclick="return confirm('Уверенны что хотите удалить комментарий?');">
+                                        <i class="fas fa-trash-alt"></i> Удалить
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                        {% endif %}
+
+                        <span class="md-comment-message">
+
+                            {% if comment.replyTo %}
+                                <a class="badge badge-light md-comment-username font-weight-bold" style="top: -1px;position: relative;line-height: 8px" href="{{ path('user_profile', {username: comment.replyTo.username}) }}">
+                                    {{ comment.replyTo.username }}
+                                </a>
+                            {% endif %}
+
+                            {{ comment.message }}
+
+                        </span>
+
+                        <small class="text-muted float-left mr-2">{{ comment.publishedAt ? comment.publishedAt | date('Y-m-d H:i:s') : '' }}</small>
+
+                        {% if app.user and comment.author.username != app.user.username %}
+                            <small class="md-comment-reply text-muted">
+                                <span class="comment-reply">
+                                    <span class="reply-user d-none">{{ comment.author.username }}</span>
+                                        Ответить
+                                </span>
+                            </small>
+                        {% endif %}
+
+                        {% if comment.anonymous == true %}
+                            <small class="text-muted">Анонимный комментарий</small>
+                        {% endif %}
+
+                    </div>
+
+                {% endif %}
+
+            {% else %}
+
+                <span class="empty-entries">У этого поста еще нет комментариев, будьте первыми.</span>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+    <div class="md-box-margin">
+        {{ pagonator.display }}
+    </div>
+
+{% endblock %}
